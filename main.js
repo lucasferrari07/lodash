@@ -1,8 +1,12 @@
 /* eslint-disable no-restricted-syntax */
 const _ = {
   map(iterable, callback) {
+    if (typeof callback !== 'function') {
+      throw new TypeError('\'callback\' argument should be a function');
+    }
+    const array = Array.isArray(iterable) ? iterable : Array.of(iterable);
     const newIterable = [];
-    for (const item of iterable) {
+    for (const item of array) {
       newIterable.push(callback(item));
     }
     return newIterable;
@@ -20,6 +24,19 @@ const _ = {
       }
     }
     return accumulator;
+  },
+  filter(iterable, callback) {
+    if (typeof callback !== 'function') {
+      throw new TypeError('\'callback\' argument should be a function');
+    }
+    const array = Array.isArray(iterable) ? iterable : Array.of(iterable);
+    const newArray = [];
+    for (const value of array) {
+      if (callback(value)) {
+        newArray.push(value);
+      }
+    }
+    return newArray;
   },
 };
 
