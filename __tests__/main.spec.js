@@ -6,6 +6,10 @@ describe('map', () => {
     const expectedOutput = input.map(item => item * 2);
     expect(_.map(input, item => item * 2)).toEqual(expectedOutput);
   });
+  test('throws an error if callback argument is not a function', () => {
+    const input = 1;
+    expect(() => _.map([], input)).toThrow(TypeError);
+  });
 });
 
 describe('reduce', () => {
@@ -37,5 +41,27 @@ describe('reduce', () => {
   test('throws an error if reducer argument is not a function', () => {
     const input = 1;
     expect(() => _.reduce([], input)).toThrow(TypeError);
+  });
+});
+
+describe('filter', () => {
+  test('filters and array of numbers by only even', () => {
+    const input = [1, 2, 3, 4, 5, 6];
+    const expectedOutput = [2, 4, 6];
+    expect(_.filter(input, num => num % 2 === 0)).toEqual(expectedOutput);
+  });
+  test('filters and array of numbers by only greater than 3', () => {
+    const input = [1, 2, 3, 4, 5, 6];
+    const expectedOutput = [4, 5, 6];
+    expect(_.filter(input, num => num > 3)).toEqual(expectedOutput);
+  });
+  test('filters and array of words by only longer than 3 characters', () => {
+    const input = ['one', 'two', 'three', 'four'];
+    const expectedOutput = ['three', 'four'];
+    expect(_.filter(input, str => str.length > 3)).toEqual(expectedOutput);
+  });
+  test('throws an error if callback argument is not a function', () => {
+    const input = 1;
+    expect(() => _.filter([], input)).toThrow(TypeError);
   });
 });
