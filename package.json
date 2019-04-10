@@ -4,7 +4,9 @@
   "description": "Mini project for a Lodash library",
   "main": "main.js",
   "scripts": {
-    "test": "jest"
+    "start": "node main.js",
+    "test": "jest",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
