@@ -65,3 +65,31 @@ describe('filter', () => {
     expect(() => _.filter([], input)).toThrow(TypeError);
   });
 });
+
+describe('max', () => {
+  test('returns the largest element in the input array', () => {
+    const input = ['tyrannosaurus', 5, 6, 10];
+    const expectedOutput = 10;
+    expect(_.max(input)).toEqual(expectedOutput);
+  });
+});
+
+describe('min', () => {
+  test('returns the smallest element in the input array', () => {
+    const input = ['tyrannosaurus', 5, 6, 10];
+    const expectedOutput = 5;
+    expect(_.min(input)).toEqual(expectedOutput);
+  });
+});
+
+describe('sortBy', () => {
+  test('sorts an array by listing first the evens and then the odds', () => {
+    const input = [9, 5, 4, 2, 3, 1, 7, 6, 8];
+    const expectedOutput = [4, 2, 6, 8, 9, 5, 3, 1, 7];
+    expect(_.sortBy(input, x => x % 2)).toEqual(expectedOutput);
+  });
+  test('throws an error if fn argument is not a function', () => {
+    const input = 1;
+    expect(() => _.sortBy([], input)).toThrow(TypeError);
+  });
+});
