@@ -6,10 +6,6 @@ describe('map', () => {
     const expectedOutput = input.map(item => item * 2);
     expect(_.map(input, item => item * 2)).toEqual(expectedOutput);
   });
-  test('throws an error if callback argument is not a function', () => {
-    const input = 1;
-    expect(() => _.map([], input)).toThrow(TypeError);
-  });
 });
 
 describe('reduce', () => {
@@ -20,7 +16,7 @@ describe('reduce', () => {
     expect(_.reduce(input, sum)).toEqual(expectedOutput);
   });
   test('reduces an array of numbers by adding it\'s values multiplied by their indexes, with an initial value set', () => {
-    const input = [1, 2, 3, 4, 5];
+    const input = [10, 2, 3, 4, 5];
     const sum = (a, b, i) => a + b * i;
     const expectedOutput = input.reduce(sum, 5);
     expect(_.reduce(input, sum, 5)).toEqual(expectedOutput);
@@ -59,10 +55,6 @@ describe('filter', () => {
     const input = ['one', 'two', 'three', 'four'];
     const expectedOutput = ['three', 'four'];
     expect(_.filter(input, str => str.length > 3)).toEqual(expectedOutput);
-  });
-  test('throws an error if callback argument is not a function', () => {
-    const input = 1;
-    expect(() => _.filter([], input)).toThrow(TypeError);
   });
 });
 
