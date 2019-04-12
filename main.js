@@ -1,5 +1,9 @@
 const is = type => obj => (obj instanceof type);
 const isFunction = is(Function);
+const largerOfWith = fn => (a, b) => (fn(a) > fn(b) ? a : b);
+const largerOf = (a, b) => largerOfWith(x => x)(a, b);
+const smallerOfWith = fn => (a, b) => (fn(a) < fn(b) ? a : b);
+const smallerOf = (a, b) => smallerOfWith(x => x)(a, b);
 const _ = {
   appendWith: fn => (arr, item) => {
     arr.push(fn(item));
@@ -7,6 +11,12 @@ const _ = {
   },
   appendIf: fn => (arr, item) => {
     if (fn(item)) {
+      arr.push(item);
+    }
+    return arr;
+  },
+  appendIfNot: fn => (arr, item) => {
+    if (!fn(item)) {
       arr.push(item);
     }
     return arr;
@@ -31,12 +41,25 @@ const _ = {
     return this.reduce(iterable, this.appendIf(callback), []);
   },
   max(iterable) {
-    const getLargest = (a, b) => (a > b ? a : b);
-    return this.reduce(iterable, getLargest);
+    return this.reduce(iterable, largerOf);
   },
   min(iterable) {
-    const getSmallest = (a, b) => (a < b ? a : b);
-    return this.reduce(iterable, getSmallest);
+    return this.reduce(iterable, smallerOf);
+  },
+  maxBy(iterable, fn) {
+    return this.reduce(iterable, largerOfWith(fn));
+  },
+  minBy(iterable, fn) {
+    return this.reduce(iterable, smallerOfWith(fn));
+  },
+  reject(iterable, callback) {
+    return this.reduce(iterable, this.appendIfNot(callback), []);
+  },
+  all(iterable, fn) {
+    return this.reduce(iterable, (a, b) => a && fn(b), true);
+  },
+  any(iterable, fn) {
+    return this.reduce(iterable, (a, b) => a || fn(b), false);
   },
   sortBy(iterable, fn) {
     if (!isFunction(fn)) {
