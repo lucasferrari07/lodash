@@ -1,5 +1,6 @@
 const is = type => obj => (obj instanceof type);
 const isFunction = is(Function);
+const isEmptyArray = val => Array.isArray(val) && val.length === 0;
 const largerOfWith = fn => (a, b) => (fn(a) > fn(b) ? a : b);
 const largerOf = largerOfWith(x => x);
 const smallerOfWith = fn => (a, b) => (fn(a) < fn(b) ? a : b);
@@ -35,15 +36,27 @@ const _ = {
     return this.reduce(iterable, appendIf(callback), []);
   },
   max(iterable) {
+    if (isEmptyArray(iterable)) {
+      return undefined;
+    }
     return this.reduce(iterable, largerOf);
   },
   min(iterable) {
+    if (isEmptyArray(iterable)) {
+      return undefined;
+    }
     return this.reduce(iterable, smallerOf);
   },
   maxBy(iterable, fn) {
+    if (isEmptyArray(iterable)) {
+      return undefined;
+    }
     return this.reduce(iterable, largerOfWith(fn));
   },
   minBy(iterable, fn) {
+    if (isEmptyArray(iterable)) {
+      return undefined;
+    }
     return this.reduce(iterable, smallerOfWith(fn));
   },
   reject(iterable, callback) {

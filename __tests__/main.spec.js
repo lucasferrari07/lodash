@@ -56,12 +56,27 @@ describe('filter', () => {
     const expectedOutput = ['three', 'four'];
     expect(_.filter(input, str => str.length > 3)).toEqual(expectedOutput);
   });
+  test('returns an empty array if an empty array is given', () => {
+    const input = [];
+    const expectedOutput = [];
+    expect(_.filter(input, val => typeof val !== 'undefined')).toEqual(expectedOutput);
+  });
+  test('if input is not an array, converts it into one and apply filter', () => {
+    const input = 1;
+    const expectedOutput = [];
+    expect(_.filter(input, val => val > 1)).toEqual(expectedOutput);
+  });
 });
 
 describe('max', () => {
   test('returns the largest element in the input array', () => {
     const input = ['tyrannosaurus', 5, 6, 10];
     const expectedOutput = 10;
+    expect(_.max(input)).toEqual(expectedOutput);
+  });
+  test('returns undefined if the input is an empty array', () => {
+    const input = [];
+    const expectedOutput = undefined;
     expect(_.max(input)).toEqual(expectedOutput);
   });
 });
