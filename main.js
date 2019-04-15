@@ -1,29 +1,20 @@
 const is = type => obj => (obj instanceof type);
 const isFunction = is(Function);
 const largerOfWith = fn => (a, b) => (fn(a) > fn(b) ? a : b);
-const largerOf = (a, b) => largerOfWith(x => x)(a, b);
+const largerOf = largerOfWith(x => x);
 const smallerOfWith = fn => (a, b) => (fn(a) < fn(b) ? a : b);
-const smallerOf = (a, b) => smallerOfWith(x => x)(a, b);
+const smallerOf = smallerOfWith(x => x);
+const appendWith = fn => (arr, item) => {
+  arr.push(fn(item));
+  return arr;
+};
+const appendIf = fn => (arr, item) => {
+  if (fn(item)) {
+    arr.push(item);
+  }
+  return arr;
+};
 const _ = {
-  appendWith: fn => (arr, item) => {
-    arr.push(fn(item));
-    return arr;
-  },
-  appendIf: fn => (arr, item) => {
-    if (fn(item)) {
-      arr.push(item);
-    }
-    return arr;
-  },
-  appendIfNot: fn => (arr, item) => {
-    if (!fn(item)) {
-      arr.push(item);
-    }
-    return arr;
-  },
-  map(iterable, callback) {
-    return this.reduce(iterable, this.appendWith(callback), []);
-  },
   reduce(iterable, callback, initialValue) {
     if (!isFunction(callback)) {
       throw new TypeError('\'callback\' argument should be a function');
@@ -37,8 +28,11 @@ const _ = {
     }
     return accumulator;
   },
+  map(iterable, callback) {
+    return this.reduce(iterable, appendWith(callback), []);
+  },
   filter(iterable, callback) {
-    return this.reduce(iterable, this.appendIf(callback), []);
+    return this.reduce(iterable, appendIf(callback), []);
   },
   max(iterable) {
     return this.reduce(iterable, largerOf);
@@ -53,7 +47,7 @@ const _ = {
     return this.reduce(iterable, smallerOfWith(fn));
   },
   reject(iterable, callback) {
-    return this.reduce(iterable, this.appendIfNot(callback), []);
+    return this.filter(iterable, val => !callback(val));
   },
   all(iterable, fn) {
     return this.reduce(iterable, (a, b) => a && fn(b), true);
